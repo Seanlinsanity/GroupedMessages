@@ -8,18 +8,41 @@
 
 #import "ChatMessageCell.h"
 
+@interface ChatMessageCell()
+@property (strong, nonatomic)NSLayoutConstraint *leadingConstraint;
+@property (strong, nonatomic)NSLayoutConstraint *trailingConstraint;
+
+@end
+
 @implementation ChatMessageCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self setupCellComponents];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = UIColor.clearColor;
+        [self initCell];
     }
     return self;
 }
 
-- (void)setupCellComponents {
+- (void)setChatmessage:(ChatMessage *)chatmessage{
+    NSLog(@"set now");
+    self.bubbleBackgroundView.backgroundColor = chatmessage.isComing ? UIColor.whiteColor : [UIColor colorWithRed:110/255.f green:182/255.f blue:110/255.f alpha:1];
+    self.messageLabel.textColor = chatmessage.isComing ? UIColor.blackColor : UIColor.whiteColor;
+    self.messageLabel.text = chatmessage.text;
+    if (chatmessage.isComing) {
+        self.trailingConstraint.active = NO;
+        self.leadingConstraint.active = YES;
+    }else{
+        self.leadingConstraint.active = NO;
+        self.trailingConstraint.active = YES;
+    }
+}
+
+
+- (void)initCell {
     self.messageLabel = ({
         UILabel *label = [UILabel new];
         label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -31,7 +54,6 @@
     self.bubbleBackgroundView = ({
         UIView *view = [UIView new];
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        view.backgroundColor = UIColor.cyanColor;
         view.layer.cornerRadius = 8;
         view;
     });
@@ -45,10 +67,13 @@
     [self addSubview: self.messageLabel];
     
     [self.messageLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:32].active = YES;
-    [self.messageLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:32].active = YES;
-    //    [self.messageLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-    [self.messageLabel.widthAnchor constraintEqualToConstant:250].active = YES;
+    self.leadingConstraint = [self.messageLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:32];
+    self.leadingConstraint.active = YES;
+    self.trailingConstraint = [self.messageLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-32];
+//    [self.messageLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
+//    [self.messageLabel.widthAnchor constraintEqualToConstant:250].active = YES;
     [self.messageLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-32].active = YES;
+    [self.messageLabel.widthAnchor constraintLessThanOrEqualToConstant:250].active = YES;
     
     [self.bubbleBackgroundView.topAnchor constraintEqualToAnchor:self.messageLabel.topAnchor constant:-16].active = YES;
     [self.bubbleBackgroundView.leadingAnchor constraintEqualToAnchor:self.messageLabel.leadingAnchor constant:-16].active = YES;
