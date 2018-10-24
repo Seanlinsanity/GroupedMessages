@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		14BD0C11217EE1A7002E1D42 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 14BD0C10217EE1A7002E1D42 /* ChatMessage.m */; };
+		14CA0B7F21803C6100C9A34F /* Date_extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 14CA0B7E21803C6100C9A34F /* Date_extension.m */; };
 		14EA6045217D47EE00DFFFC4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EA6044217D47EE00DFFFC4 /* AppDelegate.m */; };
 		14EA6048217D47EE00DFFFC4 /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14EA6047217D47EE00DFFFC4 /* MessagesViewController.m */; };
 		14EA604B217D47EF00DFFFC4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EA6049217D47EF00DFFFC4 /* Main.storyboard */; };
@@ -20,6 +21,8 @@
 /* Begin PBXFileReference section */
 		14BD0C0F217EE1A7002E1D42 /* ChatMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatMessage.h; sourceTree = "<group>"; };
 		14BD0C10217EE1A7002E1D42 /* ChatMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
+		14CA0B7D21803C6100C9A34F /* Date_extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Date_extension.h; sourceTree = "<group>"; };
+		14CA0B7E21803C6100C9A34F /* Date_extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Date_extension.m; sourceTree = "<group>"; };
 		14EA6040217D47EE00DFFFC4 /* GroupedMessages.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroupedMessages.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EA6043217D47EE00DFFFC4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		14EA6044217D47EE00DFFFC4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -45,6 +48,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14CA0B802180418C00C9A34F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				14EA6059217D5D2200DFFFC4 /* ChatMessageCell.h */,
+				14EA605A217D5D2200DFFFC4 /* ChatMessageCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		14CA0B812180419800C9A34F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				14EA6046217D47EE00DFFFC4 /* MessagesViewController.h */,
+				14EA6047217D47EE00DFFFC4 /* MessagesViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		14CA0B82218041AD00C9A34F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				14BD0C10217EE1A7002E1D42 /* ChatMessage.m */,
+				14BD0C0F217EE1A7002E1D42 /* ChatMessage.h */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		14CA0B83218041BA00C9A34F /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				14CA0B7E21803C6100C9A34F /* Date_extension.m */,
+				14CA0B7D21803C6100C9A34F /* Date_extension.h */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
 		14EA6037217D47EE00DFFFC4 = {
 			isa = PBXGroup;
 			children = (
@@ -64,12 +103,10 @@
 		14EA6042217D47EE00DFFFC4 /* GroupedMessages */ = {
 			isa = PBXGroup;
 			children = (
-				14EA6059217D5D2200DFFFC4 /* ChatMessageCell.h */,
-				14EA605A217D5D2200DFFFC4 /* ChatMessageCell.m */,
-				14EA6046217D47EE00DFFFC4 /* MessagesViewController.h */,
-				14EA6047217D47EE00DFFFC4 /* MessagesViewController.m */,
-				14BD0C0F217EE1A7002E1D42 /* ChatMessage.h */,
-				14BD0C10217EE1A7002E1D42 /* ChatMessage.m */,
+				14CA0B82218041AD00C9A34F /* Model */,
+				14CA0B812180419800C9A34F /* Controller */,
+				14CA0B802180418C00C9A34F /* View */,
+				14CA0B83218041BA00C9A34F /* Help */,
 				14EA6043217D47EE00DFFFC4 /* AppDelegate.h */,
 				14EA6044217D47EE00DFFFC4 /* AppDelegate.m */,
 				14EA6049217D47EF00DFFFC4 /* Main.storyboard */,
@@ -154,6 +191,7 @@
 				14EA6048217D47EE00DFFFC4 /* MessagesViewController.m in Sources */,
 				14EA605B217D5D2200DFFFC4 /* ChatMessageCell.m in Sources */,
 				14EA6053217D47F600DFFFC4 /* main.m in Sources */,
+				14CA0B7F21803C6100C9A34F /* Date_extension.m in Sources */,
 				14EA6045217D47EE00DFFFC4 /* AppDelegate.m in Sources */,
 				14BD0C11217EE1A7002E1D42 /* ChatMessage.m in Sources */,
 			);

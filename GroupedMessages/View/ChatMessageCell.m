@@ -16,19 +16,7 @@
 
 @implementation ChatMessageCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = UIColor.clearColor;
-        [self initCell];
-    }
-    return self;
-}
-
 - (void)setChatmessage:(ChatMessage *)chatmessage{
-    NSLog(@"set now");
     self.bubbleBackgroundView.backgroundColor = chatmessage.isComing ? UIColor.whiteColor : [UIColor colorWithRed:110/255.f green:182/255.f blue:110/255.f alpha:1];
     self.messageLabel.textColor = chatmessage.isComing ? UIColor.blackColor : UIColor.whiteColor;
     self.messageLabel.text = chatmessage.text;
@@ -39,8 +27,19 @@
         self.leadingConstraint.active = NO;
         self.trailingConstraint.active = YES;
     }
+    _chatmessage = chatmessage;
 }
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = UIColor.clearColor;
+        [self initCell];
+    }
+    return self;
+}
 
 - (void)initCell {
     self.messageLabel = ({

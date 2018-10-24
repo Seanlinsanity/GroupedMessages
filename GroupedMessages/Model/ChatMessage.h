@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ChatMessage : NSObject
 @property (strong, nonatomic) NSString *text;
 @property (nonatomic) BOOL isComing;
--(id)initWithText: (NSString *)text isComing:(BOOL)isComing;
+@property (nonatomic, strong) NSDate *date;
+- (id)initWithText: (NSString *)text isComing: (BOOL)isComing date: (NSDate*)date;
 @end
 
 NS_ASSUME_NONNULL_END
