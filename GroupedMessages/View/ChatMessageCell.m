@@ -65,7 +65,7 @@
     [self addSubview:self.bubbleBackgroundView];
     [self addSubview: self.messageLabel];
     
-    [self.messageLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:32].active = YES;
+    [self.messageLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:16].active = YES;
     self.leadingConstraint = [self.messageLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:32];
     self.leadingConstraint.active = YES;
     self.trailingConstraint = [self.messageLabel.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-32];

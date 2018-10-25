@@ -10,6 +10,7 @@
 #import "ChatMessageCell.h"
 #import "ChatMessage.h"
 #import "Date_extension.h"
+#import "DateHeaderLabel.h"
 
 @interface MessagesViewController ()
 //@property (strong, nonatomic) NSMutableArray<ChatMessage *> *messages;
@@ -43,6 +44,7 @@ NSString *cellId = @"cellId";
                                     [[ChatMessage alloc] initWithText:@"What's up!" isComing:NO  date:[NSDate dateFromCustomString:@"10/16/2018"]],
                                     [[ChatMessage alloc] initWithText:@"LeBron James hit his first big clutch shot as a Laker, burying a pull-up 28-foot 3-pointer in the Center written on the court where it says Staples Center. And James is two rebounds shy of his first triple-double as a Laker as the game enters overtime. Kyle Kuzma screamed with delight as he watched the ball go through the net." isComing:YES date:[NSDate dateFromCustomString:@"10/16/2018"]],
                                     [[ChatMessage alloc] initWithText:@"Thanks to 16 third-quarter points from Trey Burke, the Knicks have cut a 19-point first-half deficit to two late in the third. Remarkable run for Burke, who missed a key free throw late in NYK's loss to Boston on Saturday." isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
+                                    [[ChatMessage alloc] initWithText:@"Stephen Curry for 3" isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
                                     nil
                                     ];
     [self.messages addObject:firstMessage];
@@ -64,11 +66,32 @@ NSString *cellId = @"cellId";
     
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//    ChatMessage *chatMessage = self.messages[section][0];
+//    NSDateFormatter *formatter = [NSDateFormatter new];
+//    formatter.dateFormat = @"MM/dd/yyyy";
+//    return [NSString stringWithFormat:@"%@", [formatter stringFromDate:chatMessage.date]];
+//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UILabel *label = [DateHeaderLabel new];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    UIView *containerView = [UIView new];
+    [containerView addSubview:label];
+    [label.centerXAnchor constraintEqualToAnchor:containerView.centerXAnchor].active = YES;
+    [label.centerYAnchor constraintEqualToAnchor:containerView.centerYAnchor].active = YES;
+    
     ChatMessage *chatMessage = self.messages[section][0];
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.dateFormat = @"MM/dd/yyyy";
-    return [NSString stringWithFormat:@"%@", [formatter stringFromDate:chatMessage.date]];
+    label.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:chatMessage.date]];
+    
+    return containerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 50;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
