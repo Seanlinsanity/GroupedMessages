@@ -15,6 +15,7 @@
 @interface MessagesViewController ()
 //@property (strong, nonatomic) NSMutableArray<ChatMessage *> *messages;
 @property (nonatomic, strong) NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableArray *messagesFromServer;
 
 @end
 
@@ -27,7 +28,8 @@ NSString *cellId = @"cellId";
     self.navigationItem.title = @"Messages";
     self.navigationController.navigationBar.prefersLargeTitles = YES;
     
-    [self initMessages];
+    [self fetchMessages];
+    //[self initMessages];
     [self setupTableView];
 }
 
@@ -38,33 +40,74 @@ NSString *cellId = @"cellId";
     [self.tableView registerClass:ChatMessageCell.class forCellReuseIdentifier:cellId];
 }
 
-- (void)initMessages {
-    self.messages = [[NSMutableArray alloc] init];
-    NSMutableArray *firstMessage = [NSMutableArray arrayWithObjects:
-                                    [[ChatMessage alloc] initWithText:@"What's up!" isComing:NO  date:[NSDate dateFromCustomString:@"10/16/2018"]],
-                                    [[ChatMessage alloc] initWithText:@"LeBron James hit his first big clutch shot as a Laker, burying a pull-up 28-foot 3-pointer in the Center written on the court where it says Staples Center. And James is two rebounds shy of his first triple-double as a Laker as the game enters overtime. Kyle Kuzma screamed with delight as he watched the ball go through the net." isComing:YES date:[NSDate dateFromCustomString:@"10/16/2018"]],
-                                    [[ChatMessage alloc] initWithText:@"Thanks to 16 third-quarter points from Trey Burke, the Knicks have cut a 19-point first-half deficit to two late in the third. Remarkable run for Burke, who missed a key free throw late in NYK's loss to Boston on Saturday." isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
-                                    [[ChatMessage alloc] initWithText:@"Stephen Curry for 3" isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
-                                    nil
-                                    ];
-    [self.messages addObject:firstMessage];
+- (void)fetchMessages {
+    self.messagesFromServer = [NSMutableArray arrayWithObjects:
+                               [[ChatMessage alloc] initWithText:@"Zach Lowe breaks out his comprehensive guide to the most watchable (and least watchable) NBA teams, ranked from 30 to 16." isComing:NO  date:[NSDate new]],
+                               [[ChatMessage alloc] initWithText:@"What's up!" isComing:NO  date:[NSDate dateFromCustomString:@"10/16/2018"]],
+                               [[ChatMessage alloc] initWithText:@"LeBron James hit his first big clutch shot as a Laker, burying a pull-up 28-foot 3-pointer in the Center written on the court where it says Staples Center. And James is two rebounds shy of his first triple-double as a Laker as the game enters overtime. Kyle Kuzma screamed with delight as he watched the ball go through the net." isComing:YES date:[NSDate dateFromCustomString:@"10/16/2018"]],
+                               [[ChatMessage alloc] initWithText:@"Thanks to 16 third-quarter points from Trey Burke, the Knicks have cut a 19-point first-half deficit to two late in the third. Remarkable run for Burke, who missed a key free throw late in NYK's loss to Boston on Saturday." isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
+                               [[ChatMessage alloc] initWithText:@"Stephen Curry for 3" isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
+                               [[ChatMessage alloc] initWithText:@"For those interested: there's a feature on Ron Baker airing on MSG Network Monday at 11 PM. The show, part of a series dubbed ‘Unfiltered', shows Baker taking a tour of the Upper West Side and visiting his favorite places to eat, including Jacob's Pickles and the original Zabar's market." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
+                               [[ChatMessage alloc] initWithText:@"Is Giannis ready to be MVP? Will the Lakers make the playoffs? What's the Jimmy Butler fallout? There are plenty of questions to answer this season." isComing:YES date:[NSDate dateFromCustomString:@"10/22/2018"]],
+                               [[ChatMessage alloc] initWithText:@"Walton was pleased with the two stepping up in starts for Brandon Ingram and Rajon Rondo." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
+                               [[ChatMessage alloc] initWithText:@"The Lakers dropped 142 points in their loss to the Spurs." isComing:NO date:[NSDate dateFromCustomString:@"10/24/2018"]],
+                               [[ChatMessage alloc] initWithText:@"Kyle Kuzma was just 1 point shy of tying his career high in points." isComing:YES date:[NSDate dateFromCustomString:@"10/24/2018"]],
+                               nil
+                               ];
     
-    NSMutableArray *secondMessage = [NSMutableArray arrayWithObjects:
-                                     [[ChatMessage alloc] initWithText:@"For those interested: there's a feature on Ron Baker airing on MSG Network Monday at 11 PM. The show, part of a series dubbed ‘Unfiltered', shows Baker taking a tour of the Upper West Side and visiting his favorite places to eat, including Jacob's Pickles and the original Zabar's market." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
-                                     [[ChatMessage alloc] initWithText:@"Is Giannis ready to be MVP? Will the Lakers make the playoffs? What's the Jimmy Butler fallout? There are plenty of questions to answer this season." isComing:YES date:[NSDate dateFromCustomString:@"10/22/2018"]],
-                                     [[ChatMessage alloc] initWithText:@"Walton was pleased with the two stepping up in starts for Brandon Ingram and Rajon Rondo." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
-                                     nil
-                                     ];
-    [self.messages addObject:secondMessage];
-    
-    NSMutableArray *thirdMessage = [NSMutableArray arrayWithObjects:
-                                    [[ChatMessage alloc] initWithText:@"The Lakers dropped 142 points in their loss to the Spurs." isComing:NO date:[NSDate dateFromCustomString:@"10/24/2018"]],
-                                    [[ChatMessage alloc] initWithText:@"Kyle Kuzma was just 1 point shy of tying his career high in points." isComing:YES date:[NSDate dateFromCustomString:@"10/24/2018"]],
-                                    nil
-                                    ];
-    [self.messages addObject:thirdMessage];
-    
+    [self assembleGroupedMessages];
 }
+
+- (void)assembleGroupedMessages {
+    
+    NSMutableDictionary *messagesDateDict = [NSMutableDictionary new];
+    NSArray *distinctDates;
+    distinctDates = [self.messagesFromServer valueForKeyPath:@"@distinctUnionOfObjects.date"];
+    
+    for (NSDate *date in distinctDates) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"date = %@", date];
+        NSArray *messages = [self.messagesFromServer filteredArrayUsingPredicate:predicate];
+        NSLog(@"%@", date);
+        NSLog(@"%lu", (unsigned long)messages.count);
+        [messagesDateDict setObject:messages forKey:date];
+    }
+    
+    NSArray *sortedDates = [messagesDateDict.allKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        return [obj1 compare:obj2] == NSOrderedAscending;
+    }];
+    self.messages = [NSMutableArray new];
+    for (NSData* date in sortedDates){
+        [self.messages addObject:messagesDateDict[date]];
+    }
+}
+
+//- (void)initMessages {
+//    self.messages = [[NSMutableArray alloc] init];
+//    NSMutableArray *firstMessage = [NSMutableArray arrayWithObjects:
+//                                    [[ChatMessage alloc] initWithText:@"What's up!" isComing:NO  date:[NSDate dateFromCustomString:@"10/16/2018"]],
+//                                    [[ChatMessage alloc] initWithText:@"LeBron James hit his first big clutch shot as a Laker, burying a pull-up 28-foot 3-pointer in the Center written on the court where it says Staples Center. And James is two rebounds shy of his first triple-double as a Laker as the game enters overtime. Kyle Kuzma screamed with delight as he watched the ball go through the net." isComing:YES date:[NSDate dateFromCustomString:@"10/16/2018"]],
+//                                    [[ChatMessage alloc] initWithText:@"Thanks to 16 third-quarter points from Trey Burke, the Knicks have cut a 19-point first-half deficit to two late in the third. Remarkable run for Burke, who missed a key free throw late in NYK's loss to Boston on Saturday." isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
+//                                    [[ChatMessage alloc] initWithText:@"Stephen Curry for 3" isComing:NO date:[NSDate dateFromCustomString:@"10/16/2018"]],
+//                                    nil
+//                                    ];
+//    [self.messages addObject:firstMessage];
+//
+//    NSMutableArray *secondMessage = [NSMutableArray arrayWithObjects:
+//                                     [[ChatMessage alloc] initWithText:@"For those interested: there's a feature on Ron Baker airing on MSG Network Monday at 11 PM. The show, part of a series dubbed ‘Unfiltered', shows Baker taking a tour of the Upper West Side and visiting his favorite places to eat, including Jacob's Pickles and the original Zabar's market." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
+//                                     [[ChatMessage alloc] initWithText:@"Is Giannis ready to be MVP? Will the Lakers make the playoffs? What's the Jimmy Butler fallout? There are plenty of questions to answer this season." isComing:YES date:[NSDate dateFromCustomString:@"10/22/2018"]],
+//                                     [[ChatMessage alloc] initWithText:@"Walton was pleased with the two stepping up in starts for Brandon Ingram and Rajon Rondo." isComing:NO date:[NSDate dateFromCustomString:@"10/22/2018"]],
+//                                     nil
+//                                     ];
+//    [self.messages addObject:secondMessage];
+//
+//    NSMutableArray *thirdMessage = [NSMutableArray arrayWithObjects:
+//                                    [[ChatMessage alloc] initWithText:@"The Lakers dropped 142 points in their loss to the Spurs." isComing:NO date:[NSDate dateFromCustomString:@"10/24/2018"]],
+//                                    [[ChatMessage alloc] initWithText:@"Kyle Kuzma was just 1 point shy of tying his career high in points." isComing:YES date:[NSDate dateFromCustomString:@"10/24/2018"]],
+//                                    nil
+//                                    ];
+//    [self.messages addObject:thirdMessage];
+//
+//}
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
 //    ChatMessage *chatMessage = self.messages[section][0];

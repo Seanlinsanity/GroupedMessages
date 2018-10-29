@@ -74,8 +74,8 @@
 		14CA0B82218041AD00C9A34F /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				14BD0C10217EE1A7002E1D42 /* ChatMessage.m */,
 				14BD0C0F217EE1A7002E1D42 /* ChatMessage.h */,
+				14BD0C10217EE1A7002E1D42 /* ChatMessage.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
